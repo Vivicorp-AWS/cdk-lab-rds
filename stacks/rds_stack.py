@@ -35,7 +35,7 @@ class MySqlStack(Stack):
             engine=rds.DatabaseInstanceEngine.mysql(version=engine_version),
             instance_type=instance_type,
             vpc=vpc,
-            vpc_subnets=ec2.SubnetSelection(subnet_group_name="Private"),
+            vpc_subnets=ec2.SubnetSelection(subnet_group_name="Public"),
             port=3306,
             removal_policy=RemovalPolicy.DESTROY,
             deletion_protection=False
