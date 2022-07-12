@@ -66,3 +66,4 @@ cdk destroy --all # Destroy all stacks
 4. A Glue Connection to connect RDS
   * A Glue Connection, with this project's VPC, private subnets, the security group created in 1., and IAM role created in 3.
   * A S3 Endpoint, with this project's VPC, and private subnets
+5. A S3 bucket, a role to access with necessary policies
