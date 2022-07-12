@@ -13,19 +13,22 @@ from stacks.iam_stack import IAMStack
 from stacks.ec2_stack import EC2Stack
 from stacks.rds_stack import MySqlStack
 
-# Set stack name prefix
-# Should be named as "-<STACKNAME>", e.g: "-vivilab"
-# Else, set a empty string ""
 load_dotenv()
-
+# Set stack name's prefix
 if os.getenv("STACKNAME_PREFIX"):
     STACKNAME_PREFIX = "-" + os.getenv("STACKNAME_PREFIX") + "-"
 else:
     STACKNAME_PREFIX = "-"
 
-# Set environment to assign default region
+# Set the default region to deploy workloads
+if os.getenv("REGION"):
+    REGION = os.getenv("REGION")
+else:
+    REGION = 'us-east-1'
+
+# Set CDK Environment object to assign default region
 ENV = Environment(
-    region="ap-northeast-1"
+    region=REGION
     )
 
 app = cdk.App()
