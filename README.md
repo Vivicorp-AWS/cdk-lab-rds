@@ -1,58 +1,52 @@
 
-# Welcome to your CDK Python project!
+# CDK LAB for RDS + Glue + Athena
 
-This is a blank project for CDK development with Python.
+## Prerequisities
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+### Add stacks' prefix string
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+> [TODO]
 
-To manually create a virtualenv on MacOS and Linux:
+## Usage
 
-```
-$ python3 -m venv .venv
-```
+Deploy stacks:
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
+```bash
+cdk deploy <stack name>  # Deploy specitic stack
+cdk deploy --all # Deploy all stacks
+cdk deploy --all --require-approval=never  # Deploy all stacks without asking yes or no
 ```
 
-If you are a Windows platform, you would activate the virtualenv like this:
+Destroy stacks:
 
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
+```bash
+cdk destroy <stack name>  # Destroy specitic stack
+cdk destroy --all # Destroy all stacks
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+## Components to deploy
 
-```
-$ cdk synth
-```
+* IAM Stack (`cdk-<prefix>-iam-stack`)
+  * A role called `EC2SSMInstanceProfile` with `AmazonSSMManagedInstanceCore` managed policy to connect to the EC2 instance used as development environment
+* VPC Stack (`cdk-<prefix>-vpc-stack`)
+  * A brand new VPC with 2 Availability Zones to create subnets
+  * 2 public subnets in each AZ
+  * 2 private subnets in each AZ
+* EC2 Stack (`cdk-<prefix>-ec2-stack`)
+  * A `t2.micro` free instance with `EC2SSMInstanceProfile` role attached
+* RDS Stack (`cdk-<prefix>-rds-stack`)
+  * A RDS for MySQL `v8.0.28` database instance in private subnets
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+## Todos
 
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+1. Create another security group to be used on Glue Jobs to connect RDS
+  * Create a new inbound rule in RDS's security group, with settings:
+    * Type: MySQL (so the protocal and port range will sutomatically be assigned to TCP, 3389)
+    * Source: this security group
+2. Create a new inbound rule in RDS's security group, with settings:
+    * Type: MySQL (so the protocal and port range will sutomatically be assigned to TCP, 3389)
+    * Source: EC2's default security group
+3. IAM Role for Glue and Glue ETL
+4. A Glue Connection to connect RDS
+  * A Glue Connection, with this project's VPC, private subnets, the security group created in 1., and IAM role created in 3.
+  * A S3 Endpoint, with this project's VPC, and private subnets
