@@ -5,7 +5,13 @@
 
 ### Add stacks' prefix string
 
-> [TODO]
+Provide a `.env` file with the key `STACKNAME_PREFIX` and value, or the prefix will be omit.
+
+Example:
+
+```
+STACKNAME_PREFIX=mylab
+```
 
 ## Usage
 
