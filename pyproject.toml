@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cdk-lab-rds-glue-athena"
+name = "cdk-lab-rds"
 version = "0.1.0"
 description = ""
 authors = ["Violet Vivirand <purpleslovemail@gmail.com>"]
