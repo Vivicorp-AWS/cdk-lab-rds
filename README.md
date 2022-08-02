@@ -53,6 +53,13 @@ cdk destroy cdk-mylab-iam  # e.g: Destroy the IAM stack if no STACKNAME_PREFIX a
 cdk destroy --all # Destroy all stacks
 ```
 
+All available stacks:
+
+* `cdk-<STACKNAME_PREFIX>-iam`
+* `cdk-<STACKNAME_PREFIX>-ec2`
+* `cdk-<STACKNAME_PREFIX>-vpc`
+* `cdk-<STACKNAME_PREFIX>-mysql`
+
 ## Components to deploy
 
 * IAM Stack (`cdk-<prefix>-iam-stack`)
