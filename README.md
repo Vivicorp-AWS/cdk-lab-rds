@@ -29,6 +29,8 @@ Deploy stacks:
 
 ```bash
 cdk deploy <stack name>  # Deploy specitic stack
+cdk deploy cdk-iam  # e.g: Deploy the IAM stack if no STACKNAME_PREFIX specified
+cdk deploy cdk-mylab-iam  # e.g: Deploy the IAM stack if no STACKNAME_PREFIX assigned as "mylab"
 cdk deploy --all # Deploy all stacks
 cdk deploy --all --require-approval=never  # Deploy all stacks without asking yes or no
 ```
@@ -37,6 +39,8 @@ Destroy stacks:
 
 ```bash
 cdk destroy <stack name>  # Destroy specitic stack
+cdk destroy cdk-iam  # e.g: Destroy the IAM stack if no STACKNAME_PREFIX specified
+cdk destroy cdk-mylab-iam  # e.g: Destroy the IAM stack if no STACKNAME_PREFIX assigned as "mylab"
 cdk destroy --all # Destroy all stacks
 ```
 
