@@ -1,5 +1,5 @@
 
-# CDK LAB for RDS + Glue + Athena
+# CDK LAB for RDS
 
 ## Prerequisities
 
@@ -66,8 +66,3 @@ cdk destroy --all # Destroy all stacks
 2. Create a new inbound rule in RDS's security group, with settings:
     * Type: MySQL (so the protocal and port range will sutomatically be assigned to TCP, 3389)
     * Source: EC2's default security group
-3. IAM Role for Glue and Glue ETL
-4. A Glue Connection to connect RDS
-  * A Glue Connection, with this project's VPC, private subnets, the security group created in 1., and IAM role created in 3.
-  * A S3 Endpoint, with this project's VPC, and private subnets
-5. A S3 bucket, a role to access with necessary policies
