@@ -8,10 +8,10 @@ import os
 import aws_cdk as cdk
 from aws_cdk import Environment
 
-from stacks.vpc_stack import VpcStack
+from stacks.vpc_stack import VPCStack
 from stacks.iam_stack import IAMStack
 from stacks.ec2_stack import EC2Stack
-from stacks.rds_stack import MySqlStack
+from stacks.rds_stack import MySQLStack, MariaDBStack, PostgreSQLStack
 
 load_dotenv()
 # Set stack name's prefix
@@ -26,6 +26,12 @@ if os.getenv("REGION"):
 else:
     REGION = 'us-east-1'
 
+# Set the default database engine to deploy Amazon RDS workload.
+if os.getenv("DB_ENGINE"):
+    DB_ENGINE = os.getenv("DB_ENGINE")
+else:
+    DB_ENGINE = 'MySQL'
+
 # Set CDK Environment object to assign default region
 ENV = Environment(
     region=REGION
@@ -38,7 +44,7 @@ iam_stack = IAMStack(
     env=ENV
     )
 
-vpc_stack = VpcStack(
+vpc_stack = VPCStack(
     app, f"cdk{STACKNAME_PREFIX}vpc",
     env=ENV
     )
@@ -50,12 +56,32 @@ ec2_stack = EC2Stack(
     role=iam_stack.ssmrole
 )
 
-mysql_stack = MySqlStack(
-    app, f"cdk{STACKNAME_PREFIX}mysql",
-    env=ENV,
-    description="MySQL Instance Stack",
-    db_name="db",
-    vpc=vpc_stack.vpc
+if DB_ENGINE == 'MySQL':
+    rds_stack = MySQLStack(
+        app, f"cdk{STACKNAME_PREFIX}rds",
+        env=ENV,
+        description="MySQL Instance Stack",
+        vpc=vpc_stack.vpc,
+        allow_connection_from_instance=ec2_stack.instance
+        )
+elif DB_ENGINE == 'MariaDB':
+    rds_stack = MariaDBStack(
+        app, f"cdk{STACKNAME_PREFIX}rds",
+        env=ENV,
+        description="MariaDB Instance Stack",
+        vpc=vpc_stack.vpc,
+        allow_connection_from_instance=ec2_stack.instance
     )
+elif DB_ENGINE == 'PostgreSQL':
+    rds_stack = PostgreSQLStack(
+        app, f"cdk{STACKNAME_PREFIX}rds",
+        env=ENV,
+        description="PostgreSQL Instance Stack",
+        vpc=vpc_stack.vpc,
+        allow_connection_from_instance=ec2_stack.instance
+    )
+else:
+    raise ValueError('No available database engine option specified. Options: "MySQL", "MariaDB", "PostgreSQL"')
+
 
 app.synth()

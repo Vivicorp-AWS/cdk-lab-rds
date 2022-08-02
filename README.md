@@ -36,7 +36,7 @@ REGION=us-east-2
 
 Provide a `.env` file with the key `DB_ENGINE` and value, or the engine will be set to "MySQL" as default.
 
-Options:
+Available options:
 
 * `MySQL` for MySQL for RDS
 * `MariaDB` for MariaDB for RDS
@@ -74,7 +74,7 @@ All available stacks:
 * `cdk-<STACKNAME_PREFIX>-iam`
 * `cdk-<STACKNAME_PREFIX>-ec2`
 * `cdk-<STACKNAME_PREFIX>-vpc`
-* `cdk-<STACKNAME_PREFIX>-mysql`
+* `cdk-<STACKNAME_PREFIX>-rds`
 
 ## Components to deploy
 

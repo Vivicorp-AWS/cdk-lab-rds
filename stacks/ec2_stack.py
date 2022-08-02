@@ -5,10 +5,11 @@ from aws_cdk import (
     App, Stack
 )
 from constructs import Construct
+from typing import Optional
 
 class EC2Stack(Stack):
 
-    def __init__(self, scope: Construct, id: str, vpc, role, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, vpc, role:iam.Role=None, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # Amazon Linux AMI
@@ -21,7 +22,7 @@ class EC2Stack(Stack):
 
         # Create instance in public usbnet,
         # with public assigned and AmazonSSMManagedInstanceCore policy
-        instance = ec2.Instance(self, "Instance",
+        self.instance = ec2.Instance(self, "Instance",
             instance_type=ec2.InstanceType("t2.micro"),
             machine_image=amzn_linux,
             vpc=vpc,
