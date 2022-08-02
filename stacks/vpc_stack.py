@@ -10,7 +10,7 @@ class VPCStack(Stack):
         # VPC in 2 azs, including 1 public and 1 private subnet in each az
         self.vpc = ec2.Vpc(
             self, "VPC",
-            max_azs=2,
+            max_azs=1,
             cidr="10.10.0.0/16",
             # configuration will create 2 groups in 2 AZs = 4 subnets.
             subnet_configuration=[
