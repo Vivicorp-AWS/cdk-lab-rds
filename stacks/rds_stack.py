@@ -13,9 +13,9 @@ class MySqlStack(Stack):
         self, scope:Construct,
         id:str,
         vpc,
-        db_name:str,                ## database name
-        instance_type=None,       ## ec2.InstanceType
-        engine_version=None,      ## MySQL Engine Version
+        db_name:str,  # Database name
+        instance_type=None,  # ec2.InstanceType
+        engine_version=None, # MySQL Engine Version
         **kwargs) -> None:
         
         super().__init__(scope, id, **kwargs)
