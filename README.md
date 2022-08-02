@@ -22,6 +22,8 @@ Example:
 STACKNAME_PREFIX=mylab
 ```
 
+### Set region to deploy
+
 Provide a `.env` file with the key `REGION` and value, or the region will set set to "us-east-1" as default.
 
 Example:
@@ -29,8 +31,6 @@ Example:
 ```
 REGION=us-east-2
 ```
-
-### Set region to deploy
 
 ## Usage
 
