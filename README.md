@@ -24,12 +24,28 @@ STACKNAME_PREFIX=mylab
 
 ### Set region to deploy
 
-Provide a `.env` file with the key `REGION` and value, or the region will set set to "us-east-1" as default.
+Provide a `.env` file with the key `REGION` and value, or the region will be set to "us-east-1" as default.
 
 Example:
 
 ```
 REGION=us-east-2
+```
+
+### Choose the Database Engine to be deployed
+
+Provide a `.env` file with the key `DB_ENGINE` and value, or the engine will be set to "MySQL" as default.
+
+Options:
+
+* `MySQL` for MySQL for RDS
+* `MariaDB` for MariaDB for RDS
+* `PostgreSQL` for PostgreSQL for RDS
+
+Example:
+
+```
+DB_ENGINE=MySQL
 ```
 
 ## Usage
