@@ -4,10 +4,13 @@
 This is a simple Lab environment for quickly building a Database and its peripheral infrastructures. Including:
 
 * 1x Amazon RDS instance w/ single AZ deployment
+  *  The security group of the RDS instance is set to allow EC2's security group as an inbound rule
 * 1x VPC
   * 1x Public Subnet
   * 1x Private Subnet
 * 1x EC2 w/ t2.micro instance type in Private Subnet
+  * Allow to be connected via Session Manager
+  * Use this EC2 instance to connect to RDS instance
 * 1x Lambda Function to preinstall the sample data
 
 ## Prerequisities
@@ -91,12 +94,4 @@ All available stacks:
 
 ## Todos
 
-1. Use environment variable to choose which RDS engine to be deployed. Options: MySQL, MariaDB, PostgreSQL
-2. Create another security group to be used on Glue Jobs to connect RDS
-  * Create a new inbound rule in RDS's security group, with settings:
-    * Type: MySQL (so the protocal and port range will sutomatically be assigned to TCP, 3389)
-    * Source: this security group
-3. Create a new inbound rule in RDS's security group, with settings:
-    * Type: MySQL (so the protocal and port range will sutomatically be assigned to TCP, 3389)
-    * Source: EC2's default security group
-4. Create a Lambda Function to preinstall the sample data
+1. Create a Lambda Function to preinstall the sample data
