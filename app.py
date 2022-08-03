@@ -41,17 +41,20 @@ app = cdk.App()
 
 iam_stack = IAMStack(
     app, f"cdk{STACKNAME_PREFIX}iam",
-    env=ENV
+    env=ENV,
+    description="IAM principal stack",
     )
 
 vpc_stack = VPCStack(
     app, f"cdk{STACKNAME_PREFIX}vpc",
-    env=ENV
+    env=ENV,
+    description="VPC stack",
     )
 
 ec2_stack = EC2Stack(
     app, f"cdk{STACKNAME_PREFIX}ec2",
     env=ENV,
+    description="EC2 instance stack",
     vpc=vpc_stack.vpc,
     role=iam_stack.ssmrole
 )
@@ -60,7 +63,7 @@ if DB_ENGINE == 'MySQL':
     rds_stack = MySQLStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
-        description="MySQL Instance Stack",
+        description="MySQL instance stack",
         vpc=vpc_stack.vpc,
         allow_connection_from_instance=ec2_stack.instance
         )
@@ -68,7 +71,7 @@ elif DB_ENGINE == 'MariaDB':
     rds_stack = MariaDBStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
-        description="MariaDB Instance Stack",
+        description="MariaDB instance stack",
         vpc=vpc_stack.vpc,
         allow_connection_from_instance=ec2_stack.instance
     )
@@ -76,7 +79,7 @@ elif DB_ENGINE == 'PostgreSQL':
     rds_stack = PostgreSQLStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
-        description="PostgreSQL Instance Stack",
+        description="PostgreSQL instance stack",
         vpc=vpc_stack.vpc,
         allow_connection_from_instance=ec2_stack.instance
     )
