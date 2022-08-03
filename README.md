@@ -6,8 +6,7 @@ This is a simple Lab environment for quickly building a Database and its periphe
 * 1x Amazon RDS instance w/ single AZ deployment
   *  The security group of the RDS instance is set to allow EC2's security group as an inbound rule
 * 1x VPC
-  * 1x Public Subnet
-  * 1x Private Subnet
+  * 2x Public Subnet and Private Subnet (2 AZs is the minimum requirement for RDS)
 * 1x EC2 w/ t2.micro instance type in Private Subnet
   * Allow to be connected via Session Manager
   * Use this EC2 instance to connect to RDS instance
