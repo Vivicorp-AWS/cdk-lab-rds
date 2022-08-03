@@ -16,7 +16,7 @@ class MySQLStack(Stack):
         allow_connection_from_instance,
         db_name:str="db",  # Default Database name: "db"
         instance_type:ec2.InstanceType=ec2.InstanceType.of(
-            ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: m4.large
+            ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: db.r4.large
         engine_version:rds.MysqlEngineVersion=rds.MysqlEngineVersion.VER_8_0_28, # Default: MySQL v8.0.28
         **kwargs) -> None:
         
@@ -45,7 +45,7 @@ class MariaDBStack(Stack):
         allow_connection_from_instance,
         db_name:str="db",  # Default Database name: "db"
         instance_type:ec2.InstanceType=ec2.InstanceType.of(
-            ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: m4.large
+            ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: db.r4.large
         engine_version:rds.MariaDbEngineVersion=rds.MariaDbEngineVersion.VER_10_5_9,  # Default: MariaDB v10.5.9
         **kwargs) -> None:
         
@@ -72,10 +72,10 @@ class PostgreSQLStack(Stack):
         id:str,
         vpc,
         allow_connection_from_instance,
-        db_name:str="db",  # Default Database name: "db"
+        db_name:str="postgres",  # Default Database name: "postgres". Can't use PostgreSQL's reserved name "db" as database name
         instance_type:ec2.InstanceType=ec2.InstanceType.of(
-            ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: m4.large
-        engine_version:rds.PostgresEngineVersion=rds.PostgresEngineVersion.VER_14_2,  # Default: PostgreSQL v14.2
+            ec2.InstanceClass.MEMORY5, ec2.InstanceSize.LARGE),  # Default instance type: db.r5.large. The minimum instance generation is 5.
+        engine_version:rds.PostgresEngineVersion=rds.PostgresEngineVersion.of("14.3", "14"),  # Default: PostgreSQL v14.3
         **kwargs) -> None:
         
         super().__init__(scope, id, **kwargs)
