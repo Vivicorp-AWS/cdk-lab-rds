@@ -46,7 +46,7 @@ class MariaDBStack(Stack):
         db_name:str="db",  # Default Database name: "db"
         instance_type:ec2.InstanceType=ec2.InstanceType.of(
             ec2.InstanceClass.MEMORY4, ec2.InstanceSize.LARGE),  # Default instance type: db.r4.large
-        engine_version:rds.MariaDbEngineVersion=rds.MariaDbEngineVersion.VER_10_5_9,  # Default: MariaDB v10.5.9
+        engine_version:rds.MariaDbEngineVersion=rds.MariaDbEngineVersion.VER_10_5_13,  # Default: MariaDB v10.5.13
         **kwargs) -> None:
         
         super().__init__(scope, id, **kwargs)
