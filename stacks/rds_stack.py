@@ -22,7 +22,7 @@ class MySQLStack(Stack):
         
         super().__init__(scope, id, **kwargs)
 
-        # MySQL RDS Database Instance
+        # MySQL for RDS Database Instance
         self.db = rds.DatabaseInstance(self, "MySQL",
             database_name=db_name,
             engine=rds.DatabaseInstanceEngine.mysql(version=engine_version),
@@ -51,7 +51,7 @@ class MariaDBStack(Stack):
         
         super().__init__(scope, id, **kwargs)
 
-        # MySQL RDS Database Instance
+        # MariaDB for RDS Database Instance
         self.db = rds.DatabaseInstance(self, "MariaDB",
             database_name=db_name,
             engine=rds.DatabaseInstanceEngine.maria_db(version=engine_version),
@@ -81,7 +81,7 @@ class PostgreSQLStack(Stack):
         
         super().__init__(scope, id, **kwargs)
 
-        # MySQL RDS Database Instance
+        # PostgreSQL for RDS Database Instance
         self.db = rds.DatabaseInstance(self, "PostgreSQL",
             database_name=db_name,
             engine=rds.DatabaseInstanceEngine.postgres(version=engine_version),
