@@ -1,5 +1,5 @@
 # Pyenv envirionment
-./python-version
+python-version
 
 *.swp
 package-lock.json
