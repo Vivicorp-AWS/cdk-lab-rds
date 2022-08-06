@@ -1,3 +1,6 @@
+# Pyenv envirionment
+./python-version
+
 *.swp
 package-lock.json
 __pycache__
