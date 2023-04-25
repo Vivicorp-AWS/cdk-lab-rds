@@ -7,6 +7,9 @@ from aws_cdk import (
 from constructs import Construct
 from typing import Optional
 
+with open("./user_data/user_data.sh") as f:
+    user_data = f.read()
+
 class EC2Stack(Stack):
 
     def __init__(self, scope: Construct, id: str, vpc, role:iam.Role=None, **kwargs) -> None:
@@ -14,7 +17,7 @@ class EC2Stack(Stack):
 
         # Amazon Linux AMI
         amzn_linux = ec2.MachineImage.latest_amazon_linux(
-            generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+            generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
             edition=ec2.AmazonLinuxEdition.STANDARD,
             virtualization=ec2.AmazonLinuxVirt.HVM,
             storage=ec2.AmazonLinuxStorage.GENERAL_PURPOSE
@@ -27,5 +30,6 @@ class EC2Stack(Stack):
             machine_image=amzn_linux,
             vpc=vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Public"),
-            role=role
+            role=role,
+            user_data=ec2.UserData.custom(user_data)
             )
