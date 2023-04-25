@@ -23,7 +23,7 @@ class EC2Stack(Stack):
         # Create instance in public usbnet,
         # with public assigned and AmazonSSMManagedInstanceCore policy
         self.instance = ec2.Instance(self, "Instance",
-            instance_type=ec2.InstanceType("t2.micro"),
+            instance_type=ec2.InstanceType("t3.micro"),
             machine_image=amzn_linux,
             vpc=vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Public"),
