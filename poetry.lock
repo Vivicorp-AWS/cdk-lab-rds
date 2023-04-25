@@ -44,16 +44,59 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "aws-cdk-lib"
-version = "2.24.1"
+version = "2.76.0"
 description = "Version 2 of the AWS Cloud Development Kit library"
 category = "main"
 optional = false
 python-versions = "~=3.7"
 
 [package.dependencies]
+"aws-cdk.asset-awscli-v1" = ">=2.2.97,<3.0.0"
+"aws-cdk.asset-kubectl-v20" = ">=2.1.1,<3.0.0"
+"aws-cdk.asset-node-proxy-agent-v5" = ">=2.0.77,<3.0.0"
 constructs = ">=10.0.0,<11.0.0"
-jsii = ">=1.58.0,<2.0.0"
+jsii = ">=1.78.1,<2.0.0"
 publication = ">=0.0.3"
+typeguard = ">=2.13.3,<2.14.0"
+
+[[package]]
+name = "aws-cdk.asset-awscli-v1"
+version = "2.2.151"
+description = "A library that contains the AWS CLI for use in Lambda Layers"
+category = "main"
+optional = false
+python-versions = "~=3.7"
+
+[package.dependencies]
+jsii = ">=1.80.0,<2.0.0"
+publication = ">=0.0.3"
+typeguard = ">=2.13.3,<2.14.0"
+
+[[package]]
+name = "aws-cdk.asset-kubectl-v20"
+version = "2.1.1"
+description = "A library that contains kubectl for use in Lambda Layers"
+category = "main"
+optional = false
+python-versions = "~=3.7"
+
+[package.dependencies]
+jsii = ">=1.70.0,<2.0.0"
+publication = ">=0.0.3"
+typeguard = ">=2.13.3,<2.14.0"
+
+[[package]]
+name = "aws-cdk.asset-node-proxy-agent-v5"
+version = "2.0.126"
+description = "@aws-cdk/asset-node-proxy-agent-v5"
+category = "main"
+optional = false
+python-versions = "~=3.7"
+
+[package.dependencies]
+jsii = ">=1.80.0,<2.0.0"
+publication = ">=0.0.3"
+typeguard = ">=2.13.3,<2.14.0"
 
 [[package]]
 name = "backcall"
@@ -137,6 +180,21 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "importlib-resources"
+version = "5.12.0"
+description = "Read resources from Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
+
+[[package]]
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
@@ -196,16 +254,19 @@ testing = ["Django (<3.1)", "colorama", "docopt", "pytest (<7.0.0)"]
 
 [[package]]
 name = "jsii"
-version = "1.60.1"
+version = "1.80.0"
 description = "Python client for jsii runtime"
 category = "main"
 optional = false
 python-versions = "~=3.7"
 
 [package.dependencies]
-attrs = ">=21.2,<22.0"
-cattrs = ">=1.8,<22.2"
+attrs = ">=21.2,<23.0"
+cattrs = ">=1.8,<22.3"
+importlib-resources = ">=5.2.0"
+publication = ">=0.0.3"
 python-dateutil = "*"
+typeguard = ">=2.13.3,<2.14.0"
 typing-extensions = ">=3.7,<5.0"
 
 [[package]]
@@ -270,8 +331,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
-testing = ["pytest", "pytest-benchmark"]
+testing = ["pytest-benchmark", "pytest"]
+dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "prompt-toolkit"
@@ -403,7 +464,7 @@ executing = "*"
 pure-eval = "*"
 
 [package.extras]
-tests = ["pytest", "typeguard", "pygments", "littleutils", "cython"]
+tests = ["cython", "littleutils", "pygments", "typeguard", "pytest"]
 
 [[package]]
 name = "toml"
@@ -425,6 +486,18 @@ python-versions = ">=3.7"
 test = ["pre-commit", "pytest"]
 
 [[package]]
+name = "typeguard"
+version = "2.13.3"
+description = "Run-time type checker for Python"
+category = "main"
+optional = false
+python-versions = ">=3.5.3"
+
+[package.extras]
+doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["pytest", "typing-extensions", "mypy"]
+
+[[package]]
 name = "typing-extensions"
 version = "4.2.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -440,10 +513,22 @@ category = "dev"
 optional = false
 python-versions = "*"
 
+[[package]]
+name = "zipp"
+version = "3.15.0"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.6"
-content-hash = "4607e1229f011b68b11e70358accd91bfc0b066589080a2e9ec9801b5dd9e189"
+content-hash = "f11a0aed1169974d11e3cc03731df5d8d8155dbc99a387d813bd19a5190e8fef"
 
 [metadata.files]
 appnope = [
@@ -463,8 +548,20 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 aws-cdk-lib = [
-    {file = "aws-cdk-lib-2.24.1.tar.gz", hash = "sha256:0ac1fa6bb90a8433ae5e9f3a13c369f9ac39d1347c8399ca2f6d242a888c841d"},
-    {file = "aws_cdk_lib-2.24.1-py3-none-any.whl", hash = "sha256:bf349fba338926eb6dc27719ca504771a262b9831e45e1acf6d924b41e38b7fe"},
+    {file = "aws-cdk-lib-2.76.0.tar.gz", hash = "sha256:988fe73c5e555487788b1c66badbcf3885081bf7bc8111373ca2d86b60680bd0"},
+    {file = "aws_cdk_lib-2.76.0-py3-none-any.whl", hash = "sha256:59575b5ee0fee4925f12b6cb8d832c05346b6531e606d4c4d449e97c118597f8"},
+]
+"aws-cdk.asset-awscli-v1" = [
+    {file = "aws-cdk.asset-awscli-v1-2.2.151.tar.gz", hash = "sha256:fb69842e8dc1586972f729908de2714a6c99182cde65e45f327bc2573547f764"},
+    {file = "aws_cdk.asset_awscli_v1-2.2.151-py3-none-any.whl", hash = "sha256:58d7dc84e5212bfbc8233bb7a6372c33f3fa840723c59296fc6dd3ad66b18915"},
+]
+"aws-cdk.asset-kubectl-v20" = [
+    {file = "aws-cdk.asset-kubectl-v20-2.1.1.tar.gz", hash = "sha256:9834cdb150c5590aea4e5eba6de2a89b4c60617451181c524810c5a75154565c"},
+    {file = "aws_cdk.asset_kubectl_v20-2.1.1-py3-none-any.whl", hash = "sha256:a2fad1a5a35a94a465efe60859f91e45dacc33261fb9bbf1cf9bbc6e2f70e9d6"},
+]
+"aws-cdk.asset-node-proxy-agent-v5" = [
+    {file = "aws-cdk.asset-node-proxy-agent-v5-2.0.126.tar.gz", hash = "sha256:408d1341d78df8876ec40cf7ca65af0f8a3688ded5d50d7a8e36676af0f37a16"},
+    {file = "aws_cdk.asset_node_proxy_agent_v5-2.0.126-py3-none-any.whl", hash = "sha256:d730035a24542fa14784f1a4fbb3a873b36cc1f8cf73b07b352ac118c6db760e"},
 ]
 backcall = [
     {file = "backcall-0.2.0-py2.py3-none-any.whl", hash = "sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255"},
@@ -498,6 +595,10 @@ executing = [
     {file = "executing-0.8.3-py2.py3-none-any.whl", hash = "sha256:d1eef132db1b83649a3905ca6dd8897f71ac6f8cac79a7e58a1a09cf137546c9"},
     {file = "executing-0.8.3.tar.gz", hash = "sha256:c6554e21c6b060590a6d3be4b82fb78f8f0194d809de5ea7df1c093763311501"},
 ]
+importlib-resources = [
+    {file = "importlib_resources-5.12.0-py3-none-any.whl", hash = "sha256:7b1deeebbf351c7578e09bf2f63fa2ce8b5ffec296e0d349139d43cca061a81a"},
+    {file = "importlib_resources-5.12.0.tar.gz", hash = "sha256:4be82589bf5c1d7999aedf2a45159d10cb3ca4f19b2271f8792bc8e6da7b22f6"},
+]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
@@ -511,8 +612,8 @@ jedi = [
     {file = "jedi-0.18.1.tar.gz", hash = "sha256:74137626a64a99c8eb6ae5832d99b3bdd7d29a3850fe2aa80a4126b2a7d949ab"},
 ]
 jsii = [
-    {file = "jsii-1.60.1-py3-none-any.whl", hash = "sha256:0f1e6c8c5f05ad2b494309664ed0268c32dab3fa2a84a4d6604ba8eeaf2b9148"},
-    {file = "jsii-1.60.1.tar.gz", hash = "sha256:615e1854a461b3bcf234ca75a48cd0a45a4e71d5913c2f270bdd9b93e033b088"},
+    {file = "jsii-1.80.0-py3-none-any.whl", hash = "sha256:ea3cace063f6a47cdf0a74c929618d779efab426fedb7692a8ac1b9b29797f8c"},
+    {file = "jsii-1.80.0.tar.gz", hash = "sha256:4da63ab99f2696cd063574460c94221f0a7de9d345e71dfb19dfbcecf8ca8355"},
 ]
 matplotlib-inline = [
     {file = "matplotlib-inline-0.1.3.tar.gz", hash = "sha256:a04bfba22e0d1395479f866853ec1ee28eea1485c1d69a6faf00dc3e24ff34ee"},
@@ -594,6 +695,10 @@ traitlets = [
     {file = "traitlets-5.3.0-py3-none-any.whl", hash = "sha256:65fa18961659635933100db8ca120ef6220555286949774b9cfc106f941d1c7a"},
     {file = "traitlets-5.3.0.tar.gz", hash = "sha256:0bb9f1f9f017aa8ec187d8b1b2a7a6626a2a1d877116baba52a129bfa124f8e2"},
 ]
+typeguard = [
+    {file = "typeguard-2.13.3-py3-none-any.whl", hash = "sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1"},
+    {file = "typeguard-2.13.3.tar.gz", hash = "sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4"},
+]
 typing-extensions = [
     {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
     {file = "typing_extensions-4.2.0.tar.gz", hash = "sha256:f1c24655a0da0d1b67f07e17a5e6b2a105894e6824b92096378bb3668ef02376"},
@@ -601,4 +706,8 @@ typing-extensions = [
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
     {file = "wcwidth-0.2.5.tar.gz", hash = "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"},
+]
+zipp = [
+    {file = "zipp-3.15.0-py3-none-any.whl", hash = "sha256:48904fc76a60e542af151aded95726c1a5c34ed43ab4134b597665c86d7ad556"},
+    {file = "zipp-3.15.0.tar.gz", hash = "sha256:112929ad649da941c23de50f356a2b5570c954b65150642bccdd66bf194d224b"},
 ]
