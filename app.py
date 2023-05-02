@@ -51,12 +51,16 @@ vpc_stack = VPCStack(
     description="VPC stack",
     )
 
+sg_rds = vpc_stack.sg_rds
+sg_ec2 = vpc_stack.sg_ec2
+
 ec2_stack = EC2Stack(
     app, f"cdk{STACKNAME_PREFIX}ec2",
     env=ENV,
     description="EC2 instance stack",
     vpc=vpc_stack.vpc,
-    role=iam_stack.ssmrole
+    security_group=sg_ec2,
+    role=iam_stack.ssmrole,
 )
 
 if DB_ENGINE == 'MySQL':

@@ -26,6 +26,23 @@ class VPCStack(Stack):
                     )
                 ],
             )
+        
+        # Security group for EC2
+        self.sg_ec2 = ec2.SecurityGroup(
+            self, "EC2SecurityGroup",
+            vpc=self.vpc,
+            allow_all_outbound=True,
+        )
 
-        CfnOutput(self, "Default Security Group",
-                       value=self.vpc.vpc_default_security_group)
+        # [TODO] Create different security group for PostgreSQL RDS instance
+        # Security group for MySQL/MariaDB RDS instance
+        self.sg_rds = ec2.SecurityGroup(
+            self, "RDSSecurityGroup",
+            vpc=self.vpc,
+            allow_all_outbound=True,
+        )
+
+        self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(3306))
+
+        # CfnOutput(self, "Output",
+        #                value=self.vpc.vpc_id)
