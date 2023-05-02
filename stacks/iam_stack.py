@@ -22,3 +22,22 @@ class IAMStack(Stack):
             username="databaseuser",
             secret_name="rds-secret",
         )
+
+        self.ssmrole.attach_inline_policy(iam.Policy(self, "ReadDBSecretPolicy",
+                                                          statements=[
+            iam.PolicyStatement(
+            actions=[
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:ListSecretVersionIds",],
+            resources=[self.db_secret.secret_arn]  # [TODO] Get secret by secret name. But should be ARN...... Create a fixed string instead?
+            ),
+            iam.PolicyStatement(
+            actions=[
+            "secretsmanager:GetRandomPassword",
+            "secretsmanager:ListSecrets",],
+            resources=["*"]
+            )]
+        ))
+
