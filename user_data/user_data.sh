@@ -1,3 +1,4 @@
+#!/bin/bash
 cat > /home/ssm-user/hello_world.sh << EOF
 echo "Hello World!"
 EOF
