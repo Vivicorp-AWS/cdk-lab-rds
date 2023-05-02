@@ -16,11 +16,9 @@ class EC2Stack(Stack):
         super().__init__(scope, id, **kwargs)
 
         # Amazon Linux AMI
-        amzn_linux = ec2.MachineImage.latest_amazon_linux(
-            generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
+        amzn_linux = ec2.MachineImage.latest_amazon_linux2(
+            cpu_type=ec2.AmazonLinuxCpuType.X86_64,
             edition=ec2.AmazonLinuxEdition.STANDARD,
-            virtualization=ec2.AmazonLinuxVirt.HVM,
-            storage=ec2.AmazonLinuxStorage.GENERAL_PURPOSE
             )
 
         # Create instance in public usbnet,
