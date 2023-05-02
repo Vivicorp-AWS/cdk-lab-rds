@@ -1,5 +1,6 @@
 from aws_cdk import (
     aws_iam as iam,
+    aws_rds as rds,
     Stack
 )
 from constructs import Construct
@@ -16,3 +17,8 @@ class IAMStack(Stack):
             description="Allows EC2 instances to call AWS services on your behalf."
         )
         self.ssmrole.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
+
+        self.db_secret = rds.DatabaseSecret(self, "DatabaseSecret",
+            username="databaseuser",
+            secret_name="rds-secret",
+        )
