@@ -1,12 +1,13 @@
 from aws_cdk import (
+    Stack,
     aws_iam as iam,
-    aws_rds as rds,
-    Stack
+    aws_secretsmanager as secretsmanager,
+    SecretValue
 )
 from constructs import Construct
 
 class IAMStack(Stack):
-    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, db_name, db_username, db_password, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # Role with "AmazonSSMManagedInstanceCore" Managed Policy
@@ -18,9 +19,12 @@ class IAMStack(Stack):
         )
         self.ssmrole.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
 
-        self.db_secret = rds.DatabaseSecret(self, "DatabaseSecret",
-            username="databaseuser",
-            secret_name="rds-secret",
+        self.db_secret = secretsmanager.Secret(self, "DatabaseSecret",
+                                               secret_object_value={
+                                                   "database": SecretValue.unsafe_plain_text(db_name),
+                                                   "username": SecretValue.unsafe_plain_text(db_username),
+                                                   "password": SecretValue.unsafe_plain_text(db_password),
+                                               }
         )
 
         self.ssmrole.attach_inline_policy(iam.Policy(self, "ReadDBSecretPolicy",
