@@ -4,6 +4,7 @@
 # https://github.com/aws-samples/aws-cdk-examples/blob/master/python/rds/aurora/aurora.py
 from dotenv import load_dotenv
 import os
+import sys
 
 import aws_cdk as cdk
 from aws_cdk import Environment
@@ -32,6 +33,26 @@ if os.getenv("DB_ENGINE"):
 else:
     DB_ENGINE = 'MySQL'
 
+# Set the default database name
+if os.getenv("DB_NAME"):
+    DB_NAME = os.getenv("DB_NAME")
+else:
+    DB_NAME = "database"
+
+# Set the default database username
+if os.getenv("DB_USERNAME"):
+    DB_USERNAME = os.getenv("DB_USERNAME")
+else:
+    print("Please specify DB_USERNAME in .env file")
+    sys.exit(1)
+
+# Set the default database password
+if os.getenv("DB_PASSWORD"):
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+else:
+    print("Please specify DB_PASSWORD in .env file")
+    sys.exit(1)
+
 # Set CDK Environment object to assign default region
 ENV = Environment(
     region=REGION
@@ -42,8 +63,13 @@ app = cdk.App()
 iam_stack = IAMStack(
     app, f"cdk{STACKNAME_PREFIX}iam",
     env=ENV,
+    db_name=DB_NAME,
+    db_username=DB_USERNAME,
+    db_password=DB_PASSWORD,
     description="IAM principal stack",
     )
+
+ssm_role = iam_stack.ssmrole
 
 vpc_stack = VPCStack(
     app, f"cdk{STACKNAME_PREFIX}vpc",
@@ -60,16 +86,19 @@ ec2_stack = EC2Stack(
     description="EC2 instance stack",
     vpc=vpc_stack.vpc,
     security_group=sg_ec2,
-    role=iam_stack.ssmrole,
+    role=ssm_role,
 )
 
+# [TODO] Inject db_secret
 if DB_ENGINE == 'MySQL':
     rds_stack = MySQLStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
         description="MySQL instance stack",
         vpc=vpc_stack.vpc,
-        allow_connection_from_instance=ec2_stack.instance
+        db_name=DB_NAME,
+        db_username=DB_USERNAME,
+        db_password=DB_PASSWORD,
         )
 elif DB_ENGINE == 'MariaDB':
     rds_stack = MariaDBStack(
