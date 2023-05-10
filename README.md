@@ -3,6 +3,8 @@
 
 This is a simple Lab environment for quickly building a Database and its peripheral infrastructures.
 
+![](./architecture.jpg)
+
 ## Components to be deployed
 
 * IAM Stack (`cdk-<prefix>-iam-stack`)
