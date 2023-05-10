@@ -34,10 +34,11 @@ else:
     DB_ENGINE = 'MySQL'
 
 # Set the default database name
-if os.getenv("DB_NAME"):
-    DB_NAME = os.getenv("DB_NAME")
+if os.getenv("DB_IDENTIFIER"):
+    DB_IDENTIFIER = os.getenv("DB_IDENTIFIER")
 else:
-    DB_NAME = "database"
+    print("Please specify DB_IDENTIFIER in .env file")
+    sys.exit(1)
 
 # Set the default database username
 if os.getenv("DB_USERNAME"):
@@ -53,6 +54,14 @@ else:
     print("Please specify DB_PASSWORD in .env file")
     sys.exit(1)
 
+# Aggregrate database related parameters
+db_params = {
+    "username": DB_USERNAME,
+    "password": DB_PASSWORD,
+    "identifier": DB_IDENTIFIER,
+    "engine": DB_ENGINE,
+}
+
 # Set CDK Environment object to assign default region
 ENV = Environment(
     region=REGION
@@ -63,11 +72,11 @@ app = cdk.App()
 iam_stack = IAMStack(
     app, f"cdk{STACKNAME_PREFIX}iam",
     env=ENV,
-    db_name=DB_NAME,
-    db_username=DB_USERNAME,
-    db_password=DB_PASSWORD,
+    db_params=db_params,
     description="IAM principal stack",
     )
+
+db_secret_name = iam_stack.db_secret.secret_name
 
 ssm_role = iam_stack.ssmrole
 
@@ -75,8 +84,10 @@ vpc_stack = VPCStack(
     app, f"cdk{STACKNAME_PREFIX}vpc",
     env=ENV,
     description="VPC stack",
+    db_engine=db_params["engine"],
     )
 
+vpc = vpc_stack.vpc
 sg_rds = vpc_stack.sg_rds
 sg_ec2 = vpc_stack.sg_ec2
 
@@ -84,37 +95,39 @@ ec2_stack = EC2Stack(
     app, f"cdk{STACKNAME_PREFIX}ec2",
     env=ENV,
     description="EC2 instance stack",
-    vpc=vpc_stack.vpc,
+    vpc=vpc,
     security_group=sg_ec2,
     role=ssm_role,
+    db_engine=db_params["engine"],
+    db_secret_name=db_secret_name,
 )
 
-# [TODO] Inject db_secret
-if DB_ENGINE == 'MySQL':
+if db_params["engine"] == 'MySQL':
     rds_stack = MySQLStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
         description="MySQL instance stack",
-        vpc=vpc_stack.vpc,
-        db_name=DB_NAME,
-        db_username=DB_USERNAME,
-        db_password=DB_PASSWORD,
+        vpc=vpc,
+        db_params=db_params,
+        security_groups=[sg_rds],
         )
-elif DB_ENGINE == 'MariaDB':
+elif db_params["engine"] == 'MariaDB':
     rds_stack = MariaDBStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
         description="MariaDB instance stack",
-        vpc=vpc_stack.vpc,
-        allow_connection_from_instance=ec2_stack.instance
+        vpc=vpc,
+        db_params=db_params,
+        security_groups=[sg_rds],
     )
-elif DB_ENGINE == 'PostgreSQL':
+elif db_params["engine"] == 'PostgreSQL':
     rds_stack = PostgreSQLStack(
         app, f"cdk{STACKNAME_PREFIX}rds",
         env=ENV,
         description="PostgreSQL instance stack",
-        vpc=vpc_stack.vpc,
-        allow_connection_from_instance=ec2_stack.instance
+        vpc=vpc,
+        db_params=db_params,
+        security_groups=[sg_rds],
     )
 else:
     raise ValueError('No available database engine option specified. Options: "MySQL", "MariaDB", "PostgreSQL"')

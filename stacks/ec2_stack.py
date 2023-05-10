@@ -7,12 +7,24 @@ from aws_cdk import (
 from constructs import Construct
 from typing import Optional
 
-with open("./user_data/user_data.sh") as f:
-    user_data = f.read()
+# Load user data for different database engine
+with open("./user_data/user_data_mysql.sh") as f:
+    user_data_mysql = f.read()
+
+with open("./user_data/user_data_postgresql.sh") as f:
+    user_data_postgresql = f.read()
 
 class EC2Stack(Stack):
 
-    def __init__(self, scope: Construct, id: str, vpc, security_group=None, role:iam.Role=None, **kwargs) -> None:
+    def __init__(
+            self, scope: Construct,
+            id: str,
+            vpc,
+            security_group,
+            role:iam.Role,
+            db_engine:str,
+            db_secret_name:str,
+            **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # Amazon Linux AMI
@@ -20,6 +32,15 @@ class EC2Stack(Stack):
             cpu_type=ec2.AmazonLinuxCpuType.X86_64,
             edition=ec2.AmazonLinuxEdition.STANDARD,
             )
+        
+        # Choose the user data by database engine
+        if db_engine in ("MySQL", "MariaDB"):
+            self.user_data = user_data_mysql
+        elif db_engine == "PostgreSQL":
+            self.user_data = user_data_postgresql
+        
+        # Replace the placeholser string of secret id with secret name
+        self.user_data = self.user_data.replace("PLACEHOLDER_SECRET_ID", db_secret_name)
 
         # Create instance in public usbnet,
         # with public assigned and AmazonSSMManagedInstanceCore policy
@@ -30,5 +51,5 @@ class EC2Stack(Stack):
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Public"),
             role=role,
             security_group=security_group,
-            user_data=ec2.UserData.custom(user_data),
+            user_data=ec2.UserData.custom(self.user_data),
             )

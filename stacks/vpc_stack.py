@@ -4,7 +4,7 @@ from constructs import Construct
 
 class VPCStack(Stack):
 
-    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, db_engine:str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # VPC in 2 azs, including 1 public and 1 private subnet in each az
@@ -34,7 +34,7 @@ class VPCStack(Stack):
             allow_all_outbound=True,
         )
 
-        # [TODO] Create different security group for PostgreSQL RDS instance
+
         # Security group for MySQL/MariaDB RDS instance
         self.sg_rds = ec2.SecurityGroup(
             self, "RDSSecurityGroup",
@@ -42,7 +42,10 @@ class VPCStack(Stack):
             allow_all_outbound=True,
         )
 
-        self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(3306))
+        if db_engine in ("MySQL", "MariaDB"):
+            self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(3306))
+        elif db_engine == "PostgreSQL":
+            self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(5432))
 
         # CfnOutput(self, "Output",
         #                value=self.vpc.vpc_id)
