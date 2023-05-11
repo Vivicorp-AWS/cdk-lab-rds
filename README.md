@@ -54,7 +54,7 @@ DB_PASSWORD=password
 ## Quickstart
 
 1. Set environment variables
-2. Deploy all stacks at once by executing `cdk deploy --all --force` command
+2. Deploy all stacks at once by executing `cdk deploy --all` command
 3. Login to AWS console, enter EC2 service, check the instance we just created and click "Connect" button, navigate to "Session Manager" tab and click "Connect" button
 4. Execute `/srv/install_example_database.sh` to load the example database into RDS database instance
 5. Execute `/srv/login_database.sh` to login to the database with the command line client
