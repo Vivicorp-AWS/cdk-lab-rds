@@ -2,7 +2,7 @@
 from aws_cdk import (
     aws_ec2 as ec2,
     aws_iam as iam,
-    App, Stack
+    App, Stack, NestedStack
 )
 from constructs import Construct
 from typing import Optional
@@ -14,7 +14,7 @@ with open("./user_data/user_data_mysql.sh") as f:
 with open("./user_data/user_data_postgresql.sh") as f:
     user_data_postgresql = f.read()
 
-class EC2Stack(Stack):
+class EC2Stack(NestedStack):
 
     def __init__(
             self, scope: Construct,

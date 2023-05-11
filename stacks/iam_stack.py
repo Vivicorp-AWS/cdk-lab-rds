@@ -3,11 +3,12 @@ from aws_cdk import (
     aws_iam as iam,
     aws_secretsmanager as secretsmanager,
     SecretValue,
-    RemovalPolicy
+    RemovalPolicy,
+    NestedStack,
 )
 from constructs import Construct
 
-class IAMStack(Stack):
+class IAMStack(NestedStack):
     def __init__(self, scope: Construct, id: str, db_params, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 

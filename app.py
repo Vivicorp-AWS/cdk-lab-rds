@@ -7,7 +7,11 @@ import os
 import sys
 
 import aws_cdk as cdk
-from aws_cdk import Environment
+from aws_cdk import (
+    Environment,
+    Stack,
+    )
+from constructs import Construct
 
 from stacks.vpc_stack import VPCStack
 from stacks.iam_stack import IAMStack
@@ -64,73 +68,79 @@ db_params = {
 
 # Set CDK Environment object to assign default region
 ENV = Environment(
-    region=REGION
+    region=REGION,
+    account="546614691476",
     )
 
 app = cdk.App()
 
-iam_stack = IAMStack(
-    app, f"cdk{STACKNAME_PREFIX}iam",
-    env=ENV,
-    db_params=db_params,
-    description="IAM principal stack",
-    )
+class RootedStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
 
-db_secret_name = iam_stack.db_secret.secret_name
+        iam_stack = IAMStack(
+            self, f"cdk{STACKNAME_PREFIX}iam",
+            # env=ENV,
+            db_params=db_params,
+            description="IAM principal stack",
+            )
 
-ssm_role = iam_stack.ssmrole
+        db_secret_name = iam_stack.db_secret.secret_name
 
-vpc_stack = VPCStack(
-    app, f"cdk{STACKNAME_PREFIX}vpc",
-    env=ENV,
-    description="VPC stack",
-    db_engine=db_params["engine"],
-    )
+        ssm_role = iam_stack.ssmrole
 
-vpc = vpc_stack.vpc
-sg_rds = vpc_stack.sg_rds
-sg_ec2 = vpc_stack.sg_ec2
+        vpc_stack = VPCStack(
+            self, f"cdk{STACKNAME_PREFIX}vpc",
+            # env=ENV,
+            description="VPC stack",
+            db_engine=db_params["engine"],
+            )
 
-ec2_stack = EC2Stack(
-    app, f"cdk{STACKNAME_PREFIX}ec2",
-    env=ENV,
-    description="EC2 instance stack",
-    vpc=vpc,
-    security_group=sg_ec2,
-    role=ssm_role,
-    db_engine=db_params["engine"],
-    db_secret_name=db_secret_name,
-)
+        vpc = vpc_stack.vpc
+        sg_rds = vpc_stack.sg_rds
+        sg_ec2 = vpc_stack.sg_ec2
 
-if db_params["engine"] == 'MySQL':
-    rds_stack = MySQLStack(
-        app, f"cdk{STACKNAME_PREFIX}rds",
-        env=ENV,
-        description="MySQL instance stack",
-        vpc=vpc,
-        db_params=db_params,
-        security_groups=[sg_rds],
+        ec2_stack = EC2Stack(
+            self, f"cdk{STACKNAME_PREFIX}ec2",
+            # env=ENV,
+            description="EC2 instance stack",
+            vpc=vpc,
+            security_group=sg_ec2,
+            role=ssm_role,
+            db_engine=db_params["engine"],
+            db_secret_name=db_secret_name,
         )
-elif db_params["engine"] == 'MariaDB':
-    rds_stack = MariaDBStack(
-        app, f"cdk{STACKNAME_PREFIX}rds",
-        env=ENV,
-        description="MariaDB instance stack",
-        vpc=vpc,
-        db_params=db_params,
-        security_groups=[sg_rds],
-    )
-elif db_params["engine"] == 'PostgreSQL':
-    rds_stack = PostgreSQLStack(
-        app, f"cdk{STACKNAME_PREFIX}rds",
-        env=ENV,
-        description="PostgreSQL instance stack",
-        vpc=vpc,
-        db_params=db_params,
-        security_groups=[sg_rds],
-    )
-else:
-    raise ValueError('No available database engine option specified. Options: "MySQL", "MariaDB", "PostgreSQL"')
 
+        if db_params["engine"] == 'MySQL':
+            rds_stack = MySQLStack(
+                self, f"cdk{STACKNAME_PREFIX}rds",
+                # env=ENV,
+                description="MySQL instance stack",
+                vpc=vpc,
+                db_params=db_params,
+                security_groups=[sg_rds],
+                )
+        elif db_params["engine"] == 'MariaDB':
+            rds_stack = MariaDBStack(
+                self, f"cdk{STACKNAME_PREFIX}rds",
+                # env=ENV,
+                description="MariaDB instance stack",
+                vpc=vpc,
+                db_params=db_params,
+                security_groups=[sg_rds],
+            )
+        elif db_params["engine"] == 'PostgreSQL':
+            rds_stack = PostgreSQLStack(
+                self, f"cdk{STACKNAME_PREFIX}rds",
+                # env=ENV,
+                description="PostgreSQL instance stack",
+                vpc=vpc,
+                db_params=db_params,
+                security_groups=[sg_rds],
+            )
+        else:
+            raise ValueError('No available database engine option specified. Options: "MySQL", "MariaDB", "PostgreSQL"')
+
+RootedStack(app, f"cdk{STACKNAME_PREFIX}stack")
 
 app.synth()

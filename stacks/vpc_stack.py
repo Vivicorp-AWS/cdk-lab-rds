@@ -1,8 +1,8 @@
-from aws_cdk import CfnOutput, Stack
+from aws_cdk import CfnOutput, Stack, NestedStack
 import aws_cdk.aws_ec2 as ec2
 from constructs import Construct
 
-class VPCStack(Stack):
+class VPCStack(NestedStack):
 
     def __init__(self, scope: Construct, id: str, db_engine:str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)

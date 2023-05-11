@@ -6,12 +6,13 @@ from aws_cdk import (
     aws_rds as rds,
     SecretValue,
     Duration,
-    RemovalPolicy, 
+    RemovalPolicy,
+    NestedStack,
 )
 
 from constructs import Construct
 
-class MySQLStack(Stack):
+class MySQLStack(NestedStack):
     def __init__(
         self, scope:Construct,
         id:str,
