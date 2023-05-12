@@ -1,9 +1,15 @@
-
-# CDK LAB for RDS
+# CDK LAB for RDS<!-- omit from toc -->
 
 This is a simple Lab environment for quickly building a Database and its peripheral infrastructures.
 
 ![](./architecture.jpg)
+
+- [Components to be deployed](#components-to-be-deployed)
+- [Prerequisite: Set environment variables](#prerequisite-set-environment-variables)
+- [Quickstart](#quickstart)
+- [Usage](#usage)
+- [References](#references)
+
 
 ## Components to be deployed
 
@@ -87,3 +93,10 @@ All available stacks:
 * `cdk-<STACKNAME_PREFIX>-ec2`
 * `cdk-<STACKNAME_PREFIX>-vpc`
 * `cdk-<STACKNAME_PREFIX>-rds`
+
+## References
+
+* [Create EC2 in an existing VPC with AWS CDK Python](https://github.com/aws-samples/aws-cdk-examples/tree/master/python/existing-vpc-new-ec2-ebs-userdata)
+* [Create VPC, EC2 ASG, and RDS instance with AWS CDK Python](https://github.com/aws-samples/aws-cdk-examples/tree/master/python/new-vpc-alb-asg-mysql)
+* [AWS CDK (v2) Python Reference](https://docs.aws.amazon.com/cdk/api/v2/python/index.html)
+* [AWS CDK (v2) Reference Documentation (TypeScript)](https://docs.aws.amazon.com/cdk/api/v2/)
