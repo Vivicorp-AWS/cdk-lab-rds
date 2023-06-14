@@ -16,6 +16,8 @@ from stacks.rds_stack import MySQLStack, MariaDBStack, PostgreSQLStack
 
 load_dotenv()
 # Set stack name's prefix
+# [TODO] Set stack name to f"{STACKNAME_PREFIX"}-<stack_name>",
+# and set default value to "cdklab-<stack_name>"
 if os.getenv("STACKNAME_PREFIX"):
     STACKNAME_PREFIX = "-" + os.getenv("STACKNAME_PREFIX") + "-"
 else:
