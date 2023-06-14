@@ -6,6 +6,7 @@ from aws_cdk import (
     aws_rds as rds,
     SecretValue,
     Duration,
+    aws_logs as logs,
     RemovalPolicy, 
 )
 
@@ -37,6 +38,7 @@ class MySQLStack(Stack):
             engine=rds.DatabaseInstanceEngine.mysql(version=engine_version),
             instance_type=instance_type,
             backup_retention=Duration.days(0),
+            cloudwatch_logs_retention=logs.RetentionDays.ONE_MONTH,
             vpc=vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Private"),
             port=3306,
@@ -72,6 +74,7 @@ class MariaDBStack(Stack):
             engine=rds.DatabaseInstanceEngine.maria_db(version=engine_version),
             instance_type=instance_type,
             backup_retention=Duration.days(0),
+            cloudwatch_logs_retention=logs.RetentionDays.ONE_MONTH,
             vpc=vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Private"),
             port=3306,
@@ -106,6 +109,7 @@ class PostgreSQLStack(Stack):
             engine=rds.DatabaseInstanceEngine.postgres(version=engine_version),
             instance_type=instance_type,
             backup_retention=Duration.days(0),
+            cloudwatch_logs_retention=logs.RetentionDays.ONE_MONTH,
             vpc=vpc,
             vpc_subnets=ec2.SubnetSelection(subnet_group_name="Private"),
             port=5432,
