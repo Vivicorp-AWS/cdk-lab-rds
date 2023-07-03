@@ -35,7 +35,7 @@ class VPCStack(Stack):
         )
 
 
-        # Security group for MySQL/MariaDB RDS instance
+        # Security group for RDS instance
         self.sg_rds = ec2.SecurityGroup(
             self, "RDSSecurityGroup",
             vpc=self.vpc,
@@ -43,8 +43,10 @@ class VPCStack(Stack):
         )
 
         if db_engine in ("MySQL", "MariaDB"):
+            # If DB engine is MySQL or MariaDB, allow access to port 3306
             self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(3306))
         elif db_engine == "PostgreSQL":
+            # If DB engine is PostgreSQL, allow access to port 5432
             self.sg_rds.add_ingress_rule(self.sg_ec2, ec2.Port.tcp(5432))
 
         # CfnOutput(self, "Output",
